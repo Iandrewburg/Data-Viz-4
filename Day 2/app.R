@@ -21,14 +21,13 @@ ui <- fluidPage(
       dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date()),
     ),
     mainPanel(
-      plotlyOutput('data_plot'),
-      plotlyOutput('simple_plot'),
-      tableOutput('table_out')
-      
+      tabsetPanel(
+        tabPanel('panel', plotlyOutput('data_plot')),
+        tabPanel('ggplot', plotlyOutput('simple_plot')),
+        tabPanel('data', tableOutput('table_out'))
+      )
     )
-    
   )
-  
 )
 
 server <- function(input, output, session) {
