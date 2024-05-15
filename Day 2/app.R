@@ -13,33 +13,36 @@ library(shinydashboard)
 
 source("functions.R")
 
-# ui <- fluidPage(
-#   h1('Stock Screener'),
-#   sidebarLayout(
-#     sidebarPanel(
-#       uiOutput('my_ticker'),
-#       dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date()),
-#     ),
-#     mainPanel(
-#       tabsetPanel(
-#         tabPanel('panel', plotlyOutput('data_plot')),
-#         tabPanel('ggplot', plotlyOutput('simple_plot')),
-#         tabPanel('data', tableOutput('table_out'))
-#       )
-#     )
-#   )
-# )
+# 
+# ui <- navbarPage(title = 'Stock Browser', 
+#                  theme = shinytheme("superhero"),
+#                  tabPanel('Control', 
+#                           uiOutput('my_ticker'), 
+#                           dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date())),
+#                  tabPanel('Plot', plotlyOutput('data_plot'), plotlyOutput('simple_plot')),
+#                  tabPanel('Data', tableOutput('table_out'))
+#                  )
 
-ui <- fluidPage(
-  tabsetPanel(
-    tabPanel('control', uiOutput('my_ticker'), dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date())),
-    tabPanel('plot', plotlyOutput('data_plot'), plotlyOutput('simple_plot')),
-    tabPanel('data', tableOutput('table_out'))
-    
-  )
-  
-  
+ui <- navbarPage(title = 'Stock Browser', 
+                 theme = shinytheme("superhero"),
+                 fluidRow(
+                   uiOutput('my_ticker'), 
+                   dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date())
+                 ),
+                 fluidRow(
+                   column(4,
+                          plotlyOutput('simple_plot')
+                          ),
+                   column(8,
+                          plotlyOutput('data_plot'))
+                   
+                 ),
+                 fluidRow(
+                   tableOutput('table_out')
+                 )
 )
+
+
 
 
 server <- function(input, output, session) {
