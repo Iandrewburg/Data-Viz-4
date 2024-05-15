@@ -21,7 +21,8 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   sp500 <- get_sp500()
   output$my_ticker <- renderUI({
-    selectInput('stock_id', 'Select a stock', c('TSLA','AMD'), selected = 'TSLA', multiple = FALSE)})
+    selectInput('stock_id', 'Select a stock', setNames(sp500$name, sp500$description), selected = 'TSLA', multiple = FALSE)
+    })
   
 }
 
