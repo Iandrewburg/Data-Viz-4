@@ -15,11 +15,19 @@ source("functions.R")
 
 ui <- fluidPage(
   h1('Stock Screener'),
-  uiOutput('my_ticker'),
-  dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date()),
-  tableOutput('table_out'),
-  plotlyOutput('data_plot'),
-  plotlyOutput('simple_plot')
+  sidebarLayout(
+    sidebarPanel(
+      uiOutput('my_ticker'),
+      dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date()),
+    ),
+    mainPanel(
+      plotlyOutput('data_plot'),
+      plotlyOutput('simple_plot'),
+      tableOutput('table_out')
+      
+    )
+    
+  )
   
 )
 
