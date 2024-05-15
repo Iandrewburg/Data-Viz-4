@@ -1,18 +1,18 @@
 # Please install these packages
 
-install.packages("shiny")
-install.packages("jsonlite")
-install.packages("data.table")
-install.packages("httr")
-install.packages("rtsdata")
-install.packages("DT")
-install.packages("TTR")
-install.packages("plotly")
-install.packages("shinyjs")
-install.packages("ggplot2")
-install.packages("devtools")
-install.packages("rsconnect")
-install.packages("networkD3")
+# install.packages("shiny")
+# install.packages("jsonlite")
+# install.packages("data.table")
+# install.packages("httr")
+# install.packages("rtsdata")
+# install.packages("DT")
+# install.packages("TTR")
+# install.packages("plotly")
+# install.packages("shinyjs")
+# install.packages("ggplot2")
+# install.packages("devtools")
+# install.packages("rsconnect")
+# install.packages("networkD3")
 
 
 ######################################################################
@@ -162,10 +162,10 @@ render_df_with_all_download_buttons <- function(my_data) {
 }
 
 
-sp500 <- get_sp500()
-
-tsla_df <- get_data_by_ticker_and_date('TSLA', start_date = Sys.Date()-1000, end_date = Sys.Date())
-
-
-get_plot_of_data(tsla_df)
-get_ggplot_plot(tsla_df)
+# sp500 <- get_sp500()
+# 
+# tsla_df <- get_data_by_ticker_and_date('TSLA', start_date = Sys.Date()-1000, end_date = Sys.Date())
+# 
+# 
+# get_plot_of_data(tsla_df)
+# get_ggplot_plot(tsla_df)
