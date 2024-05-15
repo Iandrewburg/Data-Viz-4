@@ -19,7 +19,7 @@ ui <- fluidPage(
   dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date()),
   tableOutput('table_out'),
   plotlyOutput('data_plot'),
-  plotOutput('data_plot_2')
+  plotlyOutput('simple_plot')
   
 )
 
@@ -49,8 +49,8 @@ server <- function(input, output, session) {
     get_plot_of_data(my_reactive_df())
   })
   
-  output$data_plot_2 <- renderPlot({
-    get_ggplot_plot(my_reactive_df())
+  output$simple_plot <- renderPlotly({
+    ggplotly(get_ggplot_plot(my_reactive_df()))
   })
   
 }
