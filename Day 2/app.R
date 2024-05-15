@@ -13,36 +13,37 @@ library(shinydashboard)
 
 source("functions.R")
 
-# 
-# ui <- navbarPage(title = 'Stock Browser', 
-#                  theme = shinytheme("superhero"),
-#                  tabPanel('Control', 
-#                           uiOutput('my_ticker'), 
-#                           dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date())),
-#                  tabPanel('Plot', plotlyOutput('data_plot'), plotlyOutput('simple_plot')),
-#                  tabPanel('Data', tableOutput('table_out'))
-#                  )
+ui <-dashboardPage(
+  dashboardHeader(title = 'Stock browser'), 
 
-ui <- navbarPage(title = 'Stock Browser', 
-                 theme = shinytheme("superhero"),
-                 fluidRow(
-                   uiOutput('my_ticker'), 
-                   dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date())
-                 ),
-                 fluidRow(
-                   column(4,
-                          plotlyOutput('simple_plot')
-                          ),
-                   column(8,
-                          plotlyOutput('data_plot'))
-                   
-                 ),
-                 fluidRow(
-                   tableOutput('table_out')
-                 )
+  dashboardSidebar(
+    sidebarMenu(
+      h5('sidebar'),
+      uiOutput('my_ticker'), 
+      dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date()),
+      menuItem("Plot", tabName = "plot", icon = icon("dashboard")),
+      menuItem("GGPlot", tabName = "ggplot", icon = icon("dashboard")),
+      menuItem("Data", tabName = "data", icon = icon("th"))
+    )
+  ),
+
+  dashboardBody(
+    tabItems(
+      tabItem(tabName = "ggplot",
+              plotlyOutput('simple_plot')
+      ),
+      tabItem(tabName = "plot",
+              plotlyOutput('data_plot')
+              
+      ),
+      tabItem(tabName = "data",
+              tableOutput('table_out')
+              
+      )
+      
+    )
+  )
 )
-
-
 
 
 server <- function(input, output, session) {
