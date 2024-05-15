@@ -13,22 +13,34 @@ library(shinydashboard)
 
 source("functions.R")
 
+# ui <- fluidPage(
+#   h1('Stock Screener'),
+#   sidebarLayout(
+#     sidebarPanel(
+#       uiOutput('my_ticker'),
+#       dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date()),
+#     ),
+#     mainPanel(
+#       tabsetPanel(
+#         tabPanel('panel', plotlyOutput('data_plot')),
+#         tabPanel('ggplot', plotlyOutput('simple_plot')),
+#         tabPanel('data', tableOutput('table_out'))
+#       )
+#     )
+#   )
+# )
+
 ui <- fluidPage(
-  h1('Stock Screener'),
-  sidebarLayout(
-    sidebarPanel(
-      uiOutput('my_ticker'),
-      dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date()),
-    ),
-    mainPanel(
-      tabsetPanel(
-        tabPanel('panel', plotlyOutput('data_plot')),
-        tabPanel('ggplot', plotlyOutput('simple_plot')),
-        tabPanel('data', tableOutput('table_out'))
-      )
-    )
+  tabsetPanel(
+    tabPanel('control', uiOutput('my_ticker'), dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date())),
+    tabPanel('plot', plotlyOutput('data_plot'), plotlyOutput('simple_plot')),
+    tabPanel('data', tableOutput('table_out'))
+    
   )
+  
+  
 )
+
 
 server <- function(input, output, session) {
   sp500 <- get_sp500()
