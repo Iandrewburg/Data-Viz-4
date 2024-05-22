@@ -105,16 +105,14 @@ server <- function(input, output, session) {
   ######################################################################
   
   output$sector_out <- renderUI({
-    selectInput('sector', 'Select a sector', choices = unique(sp500$sector), selected = unique(sp500$sector)[1], multiple = TRUE)
+    selectInput('sector', 'Select a sector', choices = unique(sp500$sector) , selected = unique(sp500$sector)[1], multiple = TRUE)
   })
   
   observeEvent(input$sector,{
     
-    selected_data <- sp500[sp500$sector %in% input$sector, ]
-    
     updateSelectInput(session = session, inputId = "stock_id", 
-                      choices = setNames(selected_data$name, selected_data$description),
-                      selected = NULL) 
+                      choices = setNames(sp500[sector %in% input$sector]$name, 
+                                         sp500[sector %in% input$sector]$description ))
     
   })
   
