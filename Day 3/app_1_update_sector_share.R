@@ -42,7 +42,7 @@ ui <-dashboardPage(
               plotlyOutput('data_plot')
       ),
       tabItem(tabName = "data",
-              tableOutput('table_out')
+              DT::dataTableOutput('table_out')
       ),
       tabItem(tabName = 'ggplot',
               plotOutput('simple_plot')
@@ -80,10 +80,13 @@ server <- function(input, output, session) {
   ########             table output                             ########
   ######################################################################
   
-  output$table_out <- renderTable({
-    my_reactive_df()
+  output$table_out <- DT::renderDT({
+    datatable(my_reactive_df(), extensions = "Buttons", options = list(dom = "Bfrtip", buttons = c("copy", "csv", "excel", "pdf", "print"))) %>% formatStyle(
+      'date',
+      backgroundColor = styleInterval(3.4, c('gray', 'yellow')))
   })
   
+
   ######################################################################
   ########             Plotly output                            ########
   ######################################################################
@@ -100,20 +103,15 @@ server <- function(input, output, session) {
     get_ggplot_plot(my_reactive_df())
   })
   
-  ######################################################################
-  ########             ggplot output                            ########
-  ######################################################################
   
   output$sector_out <- renderUI({
-    selectInput('sector', 'Select a sector', choices = unique(sp500$sector) , selected = unique(sp500$sector)[1], multiple = TRUE)
+    selectInput('sector', 'Select a sector', choices = unique(sp500$sector), selected = unique(sp500$sector)[1], multiple = TRUE)
   })
   
   observeEvent(input$sector,{
     
-    updateSelectInput(session = session, inputId = "stock_id", 
-                      choices = setNames(sp500[sector %in% input$sector]$name, 
-                                         sp500[sector %in% input$sector]$description ))
-    
+    updateSelectInput(session =session, inputId = 'stock_id', 
+                      choices = setNames(sp500[sector %in% input$sector]$name, sp500[sector %in% input$sector]$description))
   })
   
 }
