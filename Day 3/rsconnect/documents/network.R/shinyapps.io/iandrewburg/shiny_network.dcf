@@ -1,0 +1,13 @@
+name: shiny_network
+title: shiny_network
+username: iandrewburg
+account: iandrewburg
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12050725
+bundleId: 8647249
+url: https://iandrewburg.shinyapps.io/shiny_network/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: app_1_update_sector_share.R|austria-with-regions_.geojson|functions.R|map.R

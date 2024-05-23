@@ -1,0 +1,13 @@
+name: Austria_Map
+title: Austria_Map
+username: iandrewburg
+account: iandrewburg
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12050673
+bundleId: 8647222
+url: https://iandrewburg.shinyapps.io/Austria_Map/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: app_1_update_sector_share.R|austria-with-regions_.geojson|functions.R

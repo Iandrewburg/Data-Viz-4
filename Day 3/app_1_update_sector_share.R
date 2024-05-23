@@ -8,6 +8,10 @@ library(TTR)
 library(plotly)
 library(shinythemes)
 library(shinydashboard)
+library(dygraphs)
+library(quantmod) 
+library(dygraphs)
+library(networkD3)
 
 
 ######################################################################
@@ -15,6 +19,10 @@ library(shinydashboard)
 ######################################################################
 
 source('functions.R')
+######################################################################
+########             dashboardPage template                   ########
+######################################################################
+
 
 
 ######################################################################
@@ -27,11 +35,11 @@ ui <-dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       h5('sidebar'),
-      uiOutput('sector_out'),
       uiOutput('my_ticker'),
       dateRangeInput('my_date', 'Select date', start = Sys.Date()-1000, end = Sys.Date() ),
       menuItem("Plot", tabName = "plot", icon = icon("dashboard")),
       menuItem("Ggplot", tabName = "ggplot", icon = icon("dashboard")),
+      menuItem('Dygraph', tabName = 'dygraph'),
       menuItem("Data", tabName = "data", icon = icon("th"))
     )
   ),
@@ -42,10 +50,14 @@ ui <-dashboardPage(
               plotlyOutput('data_plot')
       ),
       tabItem(tabName = "data",
-              DT::dataTableOutput('table_out')
+              #tableOutput('table_out')
+              tableOutput("table_out")
       ),
       tabItem(tabName = 'ggplot',
               plotOutput('simple_plot')
+      ),
+      tabItem(tabName = 'dygraph', 
+              dygraphOutput("ohlc_dygraph")
       )
     )
   )
@@ -80,13 +92,10 @@ server <- function(input, output, session) {
   ########             table output                             ########
   ######################################################################
   
-  output$table_out <- DT::renderDT({
-    datatable(my_reactive_df(), extensions = "Buttons", options = list(dom = "Bfrtip", buttons = c("copy", "csv", "excel", "pdf", "print"))) %>% formatStyle(
-      'date',
-      backgroundColor = styleInterval(3.4, c('gray', 'yellow')))
+  output$table_out <- renderTable({
+    my_reactive_df()
   })
   
-
   ######################################################################
   ########             Plotly output                            ########
   ######################################################################
@@ -104,15 +113,14 @@ server <- function(input, output, session) {
   })
   
   
-  output$sector_out <- renderUI({
-    selectInput('sector', 'Select a sector', choices = unique(sp500$sector), selected = unique(sp500$sector)[1], multiple = TRUE)
-  })
-  
-  observeEvent(input$sector,{
+  output$ohlc_dygraph <- renderDygraph({
     
-    updateSelectInput(session =session, inputId = 'stock_id', 
-                      choices = setNames(sp500[sector %in% input$sector]$name, sp500[sector %in% input$sector]$description))
+    ohlc_xts <- xts(my_reactive_df()[,c("open","high","low", "close")], order.by = as.Date(my_reactive_df()$date))
+    graph <- dygraph(OHLC(ohlc_xts))
+    return(dyCandlestick(graph))
+    
   })
+
   
 }
 
